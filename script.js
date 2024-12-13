@@ -4,7 +4,8 @@ const uploadInput = document.getElementById('upload');
 const removeButton = document.getElementById('remove-bg');
 const resultDiv = document.getElementById('result');
 
-const API_KEY = process.env.REMOVE_BG_API_KEY || 'kZyajyoVynW1kKERK7CtEdBs';
+// 直接使用 API key，因为这是公开的前端应用
+const API_KEY = 'kZyajyoVynW1kKERK7CtEdBs';
 const API_URL = 'https://api.remove.bg/v1.0/removebg';
 
 // 处理文件上传
@@ -22,31 +23,39 @@ function handleFile(file) {
 
 // 文件输入变化事件
 uploadInput.addEventListener('change', function(e) {
-    handleFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+        handleFile(file);
+    }
 });
 
 // 拖拽相关事件
 dropZone.addEventListener('dragover', (e) => {
     e.preventDefault();
+    e.stopPropagation();
     dropZone.style.borderColor = '#2ecc71';
 });
 
 dropZone.addEventListener('dragleave', (e) => {
     e.preventDefault();
+    e.stopPropagation();
     dropZone.style.borderColor = '#4a90e2';
 });
 
 dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
+    e.stopPropagation();
     dropZone.style.borderColor = '#4a90e2';
     const file = e.dataTransfer.files[0];
-    uploadInput.files = e.dataTransfer.files;
-    handleFile(file);
+    if (file) {
+        uploadInput.files = e.dataTransfer.files;
+        handleFile(file);
+    }
 });
 
 // 去除背景按钮点击事件
 removeButton.addEventListener('click', async function() {
-    if (uploadInput.files.length === 0) {
+    if (!uploadInput.files || uploadInput.files.length === 0) {
         alert('请先上传一张图片！');
         return;
     }
@@ -65,13 +74,13 @@ removeButton.addEventListener('click', async function() {
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {
-                'X-Api-Key': API_KEY,
+                'X-Api-Key': API_KEY
             },
             body: formData
         });
 
         if (!response.ok) {
-            throw new Error('背景去除失败');
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         // 获取二进制图片数据
@@ -97,7 +106,7 @@ removeButton.addEventListener('click', async function() {
 
     } catch (error) {
         console.error('Error:', error);
-        alert('处理失败，请重试');
+        alert('处理失败，请重试: ' + error.message);
     } finally {
         // 恢复按钮状态
         removeButton.disabled = false;
@@ -107,14 +116,24 @@ removeButton.addEventListener('click', async function() {
 
 // 显示图片函数
 function displayImage(file, targetId) {
+    if (!file) return;
+    
     const reader = new FileReader();
     reader.onload = function(event) {
-        const img = document.createElement('img');
-        img.src = event.target.result;
-        img.alt = '上传的图片';
-        const container = document.getElementById(targetId);
-        container.innerHTML = '';
-        container.appendChild(img);
+        if (event.target && event.target.result) {
+            const img = document.createElement('img');
+            img.src = event.target.result;
+            img.alt = '上传的图片';
+            const container = document.getElementById(targetId);
+            if (container) {
+                container.innerHTML = '';
+                container.appendChild(img);
+            }
+        }
+    };
+    reader.onerror = function(error) {
+        console.error('Error reading file:', error);
+        alert('读取图片失败，请重试');
     };
     reader.readAsDataURL(file);
 }
