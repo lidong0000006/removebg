@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背景去除工具</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-magic"></i> 背景去除工具</h1>
+            <p class="subtitle">快速移除图片背景，让您的照片更专业</p>
+        </header>
+        <main class="main">
+            <div class="upload-section">
+                <div class="upload-area" id="drop-zone" onclick="document.getElementById('upload').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>拖拽图片到这里或点击上传</p>
+                    <input type="file" id="upload" accept="image/*" class="upload-input">
+                </div>
+                <button id="remove-bg" class="upload-button">
+                    <i class="fas fa-magic"></i> 去除背景
+                </button>
+            </div>
+            <div class="result-section">
+                <div class="image-container">
+                    <div class="original-image">
+                        <h3>原始图片</h3>
+                        <div class="image-display" id="original"></div>
+                    </div>
+                    <div class="processed-image">
+                        <h3>处理结果</h3>
+                        <div class="image-display" id="result"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <p>© 2024 背景去除工具 | 让图片处理更简单</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
