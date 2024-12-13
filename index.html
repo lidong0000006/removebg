@@ -15,51 +15,44 @@
             <h1><i class="fas fa-magic"></i> 背景去除工具</h1>
             <p class="subtitle">快速移除图片背景，让您的照片更专业</p>
         </header>
-        <div class="ad-container">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-                 data-ad-slot="YOUR_AD_SLOT_ID"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-        <main class="main">
-            <div class="upload-section">
-                <div class="upload-area" id="drop-zone" onclick="document.getElementById('upload').click()">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>拖拽图片到这里或点击上传</p>
-                    <input type="file" id="upload" accept="image/*" class="upload-input">
+        <div class="content-wrapper">
+            <aside class="sidebar">
+                <div class="ad-container">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
-                <button id="remove-bg" class="upload-button">
-                    <i class="fas fa-magic"></i> 去除背景
-                </button>
-            </div>
-            <div class="result-section">
-                <div class="image-container">
-                    <div class="original-image">
-                        <h3>原始图片</h3>
-                        <div class="image-display" id="original"></div>
+            </aside>
+            <main class="main">
+                <div class="upload-section">
+                    <div class="upload-area" id="drop-zone" onclick="document.getElementById('upload').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>拖拽图片到这里或点击上传</p>
+                        <input type="file" id="upload" accept="image/*" class="upload-input">
                     </div>
-                    <div class="processed-image">
-                        <h3>处理结果</h3>
-                        <div class="image-display" id="result"></div>
+                    <button id="remove-bg" class="upload-button">
+                        <i class="fas fa-magic"></i> 去除背景
+                    </button>
+                </div>
+                <div class="result-section">
+                    <div class="image-container">
+                        <div class="original-image">
+                            <h3>原始图片</h3>
+                            <div class="image-display" id="original"></div>
+                        </div>
+                        <div class="processed-image">
+                            <h3>处理结果</h3>
+                            <div class="image-display" id="result"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </main>
-        <div class="ad-container">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-                 data-ad-slot="YOUR_AD_SLOT_ID_2"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+            </main>
         </div>
         <footer class="footer">
             <p>© 2024 背景去除工具 | 让图片处理更简单</p>

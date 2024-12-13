@@ -175,10 +175,22 @@ body {
     100% { transform: rotate(360deg); }
 }
 
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
 .ad-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto;
+    width: 300px;
+    min-height: 600px;
     text-align: center;
     background: #fff;
     padding: 10px;
@@ -188,8 +200,16 @@ body {
 
 /* 响应式调整 */
 @media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        display: none; /* 在移动端隐藏广告 */
+    }
+    
     .ad-container {
-        margin: 10px auto;
-        padding: 5px;
+        width: 100%;
+        min-height: auto;
     }
 }
