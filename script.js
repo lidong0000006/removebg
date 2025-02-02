@@ -16,6 +16,11 @@ function handleFile(file) {
             alert('请上传图片文件！');
             return;
         }
+        // 检查文件大小（例如限制为 5MB）
+        if (file.size > 5 * 1024 * 1024) {
+            alert('图片大小不能超过 5MB！');
+            return;
+        }
         // 显示原始图片
         displayImage(file, 'original');
     }
@@ -75,38 +80,55 @@ removeButton.addEventListener('click', async function() {
             method: 'POST',
             headers: {
                 'X-Api-Key': API_KEY
+                // 移除 Content-Type 和 Accept 头，让浏览器自动处理
             },
-            body: formData
+            body: formData,
+            mode: 'cors'
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            console.error('API Error:', errorText);  // 添加错误日志
+            throw new Error(`处理失败 (${response.status}): ${errorText}`);
         }
 
         // 获取二进制图片数据
         const blob = await response.blob();
+        
+        if (blob.size === 0) {
+            throw new Error('处理后的图片数据为空');
+        }
         
         // 创建URL对象
         const url = URL.createObjectURL(blob);
         
         // 显示处理后的图片
         const img = document.createElement('img');
+        img.onload = () => {
+            // 图片加载成功后再添加到页面
+            resultDiv.innerHTML = '';
+            resultDiv.appendChild(img);
+            
+            // 添加下载按钮
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = url;
+            downloadBtn.download = 'removed-bg.png';
+            downloadBtn.className = 'download-button';
+            downloadBtn.innerHTML = '<i class="fas fa-download"></i> 下载图片';
+            resultDiv.appendChild(downloadBtn);
+        };
+        
+        img.onerror = () => {
+            console.error('图片加载失败');
+            alert('图片处理失败，请重试');
+        };
+        
         img.src = url;
         img.alt = '处理后的图片';
-        resultDiv.innerHTML = '';
-        resultDiv.appendChild(img);
-        
-        // 添加下载按钮
-        const downloadBtn = document.createElement('a');
-        downloadBtn.href = url;
-        downloadBtn.download = 'removed-bg.png';
-        downloadBtn.className = 'download-button';
-        downloadBtn.innerHTML = '<i class="fas fa-download"></i> 下载图片';
-        resultDiv.appendChild(downloadBtn);
 
     } catch (error) {
-        console.error('Error:', error);
-        alert('处理失败，请重试: ' + error.message);
+        console.error('Error details:', error);  // 添加详细错误日志
+        alert('处理失败: ' + (error.message || '请检查网络连接并重试'));
     } finally {
         // 恢复按钮状态
         removeButton.disabled = false;

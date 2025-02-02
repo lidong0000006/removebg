@@ -11,7 +11,7 @@
       "src": "/(.*)",
       "headers": {
         "cache-control": "s-maxage=0",
-        "Content-Security-Policy": "default-src 'self' https://cdnjs.cloudflare.com https://pagead2.googlesyndication.com; img-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com;"
+        "Content-Security-Policy": "default-src 'self' https://cdnjs.cloudflare.com https://pagead2.googlesyndication.com https://api.remove.bg; img-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com; connect-src 'self' https://api.remove.bg;"
       },
       "dest": "/$1"
     }
