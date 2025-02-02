@@ -10,7 +10,8 @@
     {
       "src": "/(.*)",
       "headers": {
-        "cache-control": "s-maxage=0"
+        "cache-control": "s-maxage=0",
+        "Content-Security-Policy": "default-src 'self' https://cdnjs.cloudflare.com https://pagead2.googlesyndication.com; img-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com;"
       },
       "dest": "/$1"
     }
