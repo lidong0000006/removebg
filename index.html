@@ -3,117 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在线背景去除工具 - 免费快速去除图片背景</title>
-    <meta name="description" content="专业的在线背景去除工具，一键快速去除图片背景，支持人物、产品等多种图片类型，完全免费，无需下载软件。">
-    <meta name="keywords" content="背景去除,在线抠图,图片处理,免费抠图,AI抠图">
+    <meta name="description" content="PS Remove 是一款在线图片背景去除工具。了解图片上传要求、处理步骤、透明 PNG 下载方式和隐私说明，再开始处理。">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://psremove.cn/">
+    <title>PS Remove｜在线图片背景去除工具与使用指南</title>
     <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1547189169506398"
-         crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1547189169506398" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1><i class="fas fa-magic"></i> 在线背景去除工具</h1>
-            <p class="subtitle">快速移除图片背景，让您的照片更专业</p>
-            <nav class="main-nav">
-                <a href="#features">功能介绍</a>
-                <a href="#how-to-use">使用教程</a>
-                <a href="./privacy.html">隐私政策</a>
-                <a href="./terms.html">服务条款</a>
-                <a href="./about.html">关于我们</a>
+            <a class="brand" href="./index.html" aria-label="PS Remove 首页">PS Remove</a>
+            <h1>在线图片背景去除工具</h1>
+            <p class="subtitle">为商品图、头像和个人设计素材快速制作透明背景 PNG。</p>
+            <nav class="main-nav" aria-label="主导航">
+                <a href="#tool">开始处理</a><a href="#guide">使用指南</a><a href="#faq">常见问题</a>
+                <a href="./about.html">关于我们</a><a href="./privacy.html">隐私政策</a><a href="./terms.html">服务条款</a>
             </nav>
         </header>
-        <div class="main-container">
-            <main class="main">
+
+        <main>
+            <section id="tool" class="tool-section" aria-labelledby="tool-heading">
+                <div class="section-intro">
+                    <p class="eyebrow">图片背景处理</p>
+                    <h2 id="tool-heading">上传图片，查看背景去除结果</h2>
+                    <p>选择一张清晰、主体与背景区分明显的图片。当前可以预览图片并检查格式；背景处理服务正在进行安全配置，服务恢复后可在此生成并下载透明 PNG。</p>
+                </div>
                 <div class="upload-section">
-                    <div class="upload-area" id="drop-zone" onclick="document.getElementById('upload').click()">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>拖拽图片到这里或点击上传</p>
-                        <input type="file" id="upload" accept="image/*" class="upload-input">
-                    </div>
-                    <button id="remove-bg" class="upload-button">
-                        <i class="fas fa-magic"></i> 去除背景
-                    </button>
+                    <label class="upload-area" id="drop-zone" for="upload" tabindex="0">
+                        <span class="upload-icon" aria-hidden="true">↑</span>
+                        <span class="upload-title">拖拽图片到这里，或点击选择文件</span>
+                        <span class="upload-hint">JPG、PNG、WebP，最大 5 MB</span>
+                        <input type="file" id="upload" accept="image/jpeg,image/png,image/webp" class="upload-input">
+                    </label>
+                    <p class="privacy-hint">图片仅用于本次处理。请勿上传您无权使用或包含敏感个人信息的图片。</p>
+                    <button id="remove-bg" class="upload-button" type="button" disabled>处理服务暂不可用</button>
+                    <p id="status" class="status-message" role="status" aria-live="polite">背景处理服务尚未完成安全配置；选择的图片仅显示在本地预览中，不会提交。</p>
                 </div>
                 <div class="result-section">
                     <div class="image-container">
-                        <div class="original-image">
-                            <h3>原始图片</h3>
-                            <div class="image-display" id="original"></div>
-                        </div>
-                        <div class="processed-image">
-                            <h3>处理结果</h3>
-                            <div class="image-display" id="result"></div>
-                        </div>
+                        <section class="image-panel"><h3>原始图片</h3><div class="image-display" id="original"><span class="empty-state">上传后在此预览原图</span></div></section>
+                        <section class="image-panel"><h3>处理结果</h3><div class="image-display checkerboard" id="result"><span class="empty-state">处理服务恢复后显示透明背景结果</span></div></section>
                     </div>
                 </div>
-            </main>
-        </div>
-        <section id="features" class="features-section">
-            <h2>功能特点</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-bolt"></i>
-                    <h3>快速处理</h3>
-                    <p>采用先进的AI技术，秒级完成背景去除</p>
+            </section>
+
+            <section id="guide" class="content-section">
+                <p class="eyebrow">操作说明</p><h2>如何使用 PS Remove</h2>
+                <div class="steps-grid">
+                    <article class="step-card"><span class="step-number">01</span><h3>准备图片</h3><p>选择 JPG、PNG 或 WebP 格式的图片，文件大小不超过 5 MB。主体清晰、光线充足且与背景有明显差异的图片，通常更容易得到干净的边缘。</p></article>
+                    <article class="step-card"><span class="step-number">02</span><h3>上传并处理</h3><p>点击选择文件或将图片拖入上传区域，然后点击“去除背景”。图片会提交给第三方背景处理服务进行处理；网络和服务繁忙程度会影响等待时间。</p></article>
+                    <article class="step-card"><span class="step-number">03</span><h3>检查并下载</h3><p>对比原图和结果，重点检查头发、透明物体、毛绒边缘等细节。确认效果后下载 PNG；透明区域会在支持透明度的图片查看器中显示。</p></article>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-magic"></i>
-                    <h3>智能识别</h3>
-                    <p>自动识别主体，精准分离背景</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-download"></i>
-                    <h3>免费下载</h3>
-                    <p>处理后的图片可免费下载使用</p>
-                </div>
-            </div>
-        </section>
-        <section id="how-to-use" class="tutorial-section">
-            <h2>使用教程</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <span class="step-number">1</span>
-                    <h3>上传图片</h3>
-                    <p>点击上传或拖拽图片到指定区域</p>
-                </div>
-                <div class="step-card">
-                    <span class="step-number">2</span>
-                    <h3>一键处理</h3>
-                    <p>点击"去除背景"按钮，等待处理完成</p>
-                </div>
-                <div class="step-card">
-                    <span class="step-number">3</span>
-                    <h3>下载成果</h3>
-                    <p>点击下载按钮保存处理后的图片</p>
-                </div>
-            </div>
-        </section>
+            </section>
+
+            <section class="content-section detail-grid">
+                <article class="text-card"><h2>适合哪些图片</h2><p>这项工具适合快速制作单张图片的透明背景版本，例如商品展示图、证件或社交头像、演示文稿素材和个人设计草稿。它更适合作为基础抠图步骤，不替代专业修图或人工精细选区。</p><p>复杂发丝、玻璃、薄纱、阴影、主体与背景颜色接近或多个主体互相遮挡的图片，自动识别可能会遗漏细节。建议放大检查结果；若边缘不符合用途，请换一张背景更简单的图片再试，或使用专业图像编辑工具修整。</p></article>
+                <article class="text-card"><h2>处理范围与限制</h2><ul><li>每次处理一张图片，文件最大 5 MB。</li><li>支持常见 JPG、PNG 和 WebP 图片；动画图片及非图片文件不支持。</li><li>处理结果为 PNG，实际效果取决于原图质量与第三方处理服务。</li><li>本工具不承诺每张图片都能完美分离，也不提供批量处理或人工修图。</li></ul></article>
+            </section>
+
+            <section id="faq" class="content-section faq-section">
+                <p class="eyebrow">帮助与解答</p><h2>常见问题</h2>
+                <details><summary>为什么处理结果会保留一些背景，或丢失主体边缘？</summary><p>自动识别依赖图片中的颜色、边缘和主体特征。头发、半透明物体、阴影、低对比度背景和压缩严重的图片更难识别。尝试使用更清晰的原图、提高主体与背景反差，并在下载前检查细节。</p></details>
+                <details><summary>上传的图片会保存在哪里？</summary><p>目前本站不会将所选图片发送至处理接口，仅在当前浏览器中显示预览。背景处理服务启用后，页面会说明第三方处理方式；第三方的数据处理与留存应以其当前隐私政策为准。请勿上传机密、敏感或未经授权的图片。更多信息请阅读本站<a href="./privacy.html">隐私政策</a>。</p></details>
+                <details><summary>为什么上传失败或一直无法完成？</summary><p>请确认文件格式受支持且小于 5 MB，并检查网络连接。服务端可能暂时不可用或达到处理限制；稍后重试通常可以排除临时问题。页面会显示可读的错误提示。</p></details>
+                <details><summary>为什么透明背景看起来是白色或棋盘格？</summary><p>PNG 会保存透明区域，但部分图片查看器用白色或棋盘格作为透明区域的预览底色。将 PNG 放入支持透明度的设计软件或文档中即可确认。</p></details>
+                <details><summary>可以把处理后的图片用于商业用途吗？</summary><p>请先确认您拥有原图及其中人物、商标和素材的使用权，并阅读第三方处理服务的条款。本站不提供法律意见，也不改变原图本身的权利归属。</p></details>
+            </section>
+        </main>
+
         <footer class="footer">
             <div class="footer-content">
-                <div class="footer-section">
-                    <h4>关于我们</h4>
-                    <p>专注于提供高质量的在线图片处理服务，让图片处理变得简单快捷。</p>
-                </div>
-                <div class="footer-section">
-                    <h4>快速链接</h4>
-                    <nav class="footer-nav">
-                        <a href="./privacy.html">隐私政策</a>
-                        <a href="./terms.html">服务条款</a>
-                        <a href="./about.html">关于我们</a>
-                    </nav>
-                </div>
-                <div class="footer-section">
-                    <h4>联系方式</h4>
-                    <p>邮箱：support@psremove.cn</p>
-                </div>
+                <section><h2>PS Remove</h2><p>提供简单的在线图片背景去除体验和清晰的图片处理说明。结果可能需要进一步检查和修整。</p></section>
+                <section><h2>网站信息</h2><nav class="footer-nav"><a href="./about.html">关于我们</a><a href="./privacy.html">隐私政策</a><a href="./terms.html">服务条款</a></nav></section>
+                <section><h2>联系与反馈</h2><p>服务问题或建议：<a href="mailto:support@psremove.cn">support@psremove.cn</a></p></section>
             </div>
-            <div class="footer-bottom">
-                <p>© 2024 背景去除工具 | 让图片处理更简单</p>
-            </div>
+            <p class="footer-bottom">© 2026 PS Remove · psremove.cn</p>
         </footer>
     </div>
-    <script src="./script.js"></script>
+    <script src="./script.js" defer></script>
 </body>
 </html>

@@ -1,161 +1,77 @@
-// 获取DOM元素
 const dropZone = document.getElementById('drop-zone');
 const uploadInput = document.getElementById('upload');
 const removeButton = document.getElementById('remove-bg');
+const originalDiv = document.getElementById('original');
 const resultDiv = document.getElementById('result');
+const statusMessage = document.getElementById('status');
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+let selectedFile = null;
+let resultObjectUrl = null;
 
-// 直接使用 API key，因为这是公开的前端应用
-const API_KEY = 'kZyajyoVynW1kKERK7CtEdBs';
-const API_URL = 'https://api.remove.bg/v1.0/removebg';
-
-// 处理文件上传
-function handleFile(file) {
-    if (file) {
-        // 检查文件类型
-        if (!file.type.startsWith('image/')) {
-            alert('请上传图片文件！');
-            return;
-        }
-        // 检查文件大小（例如限制为 5MB）
-        if (file.size > 5 * 1024 * 1024) {
-            alert('图片大小不能超过 5MB！');
-            return;
-        }
-        // 显示原始图片
-        displayImage(file, 'original');
-    }
+function setStatus(message, state = '') {
+    statusMessage.textContent = message;
+    statusMessage.dataset.state = state;
 }
 
-// 文件输入变化事件
-uploadInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        handleFile(file);
-    }
-});
+function showPlaceholder(container, message) {
+    const placeholder = document.createElement('span');
+    placeholder.className = 'empty-state';
+    placeholder.textContent = message;
+    container.replaceChildren(placeholder);
+}
 
-// 拖拽相关事件
-dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dropZone.style.borderColor = '#2ecc71';
-});
+function displayImage(file, container, alt) {
+    const img = document.createElement('img');
+    img.alt = alt;
+    img.src = URL.createObjectURL(file);
+    container.replaceChildren(img);
+}
 
-dropZone.addEventListener('dragleave', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dropZone.style.borderColor = '#4a90e2';
-});
-
-dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dropZone.style.borderColor = '#4a90e2';
-    const file = e.dataTransfer.files[0];
-    if (file) {
-        uploadInput.files = e.dataTransfer.files;
-        handleFile(file);
-    }
-});
-
-// 去除背景按钮点击事件
-removeButton.addEventListener('click', async function() {
-    if (!uploadInput.files || uploadInput.files.length === 0) {
-        alert('请先上传一张图片！');
+function handleFile(file) {
+    if (!file) return;
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+        selectedFile = null;
+        uploadInput.value = '';
+        removeButton.disabled = true;
+        showPlaceholder(originalDiv, '上传后在此预览原图');
+        setStatus('文件格式不支持。请选择 JPG、PNG 或 WebP 图片。', 'error');
         return;
     }
-
-    const file = uploadInput.files[0];
-    
-    // 显示加载状态
+    if (file.size > MAX_FILE_SIZE) {
+        selectedFile = null;
+        uploadInput.value = '';
+        removeButton.disabled = true;
+        showPlaceholder(originalDiv, '上传后在此预览原图');
+        setStatus('图片超过 5 MB，请选择较小的文件。', 'error');
+        return;
+    }
+    selectedFile = file;
     removeButton.disabled = true;
-    removeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 处理中...';
-    
-    try {
-        const formData = new FormData();
-        formData.append('image_file', file);
-        formData.append('size', 'auto');
+    displayImage(file, originalDiv, '待处理的原始图片');
+    showPlaceholder(resultDiv, '点击“去除背景”后在此查看结果');
+    setStatus(`已选择 ${file.name}。图片预览正常；处理服务尚未完成安全配置，暂不可提交图片。`, 'error');
+}
 
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'X-Api-Key': API_KEY
-                // 移除 Content-Type 和 Accept 头，让浏览器自动处理
-            },
-            body: formData,
-            mode: 'cors'
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('API Error:', errorText);  // 添加错误日志
-            throw new Error(`处理失败 (${response.status}): ${errorText}`);
-        }
-
-        // 获取二进制图片数据
-        const blob = await response.blob();
-        
-        if (blob.size === 0) {
-            throw new Error('处理后的图片数据为空');
-        }
-        
-        // 创建URL对象
-        const url = URL.createObjectURL(blob);
-        
-        // 显示处理后的图片
-        const img = document.createElement('img');
-        img.onload = () => {
-            // 图片加载成功后再添加到页面
-            resultDiv.innerHTML = '';
-            resultDiv.appendChild(img);
-            
-            // 添加下载按钮
-            const downloadBtn = document.createElement('a');
-            downloadBtn.href = url;
-            downloadBtn.download = 'removed-bg.png';
-            downloadBtn.className = 'download-button';
-            downloadBtn.innerHTML = '<i class="fas fa-download"></i> 下载图片';
-            resultDiv.appendChild(downloadBtn);
-        };
-        
-        img.onerror = () => {
-            console.error('图片加载失败');
-            alert('图片处理失败，请重试');
-        };
-        
-        img.src = url;
-        img.alt = '处理后的图片';
-
-    } catch (error) {
-        console.error('Error details:', error);  // 添加详细错误日志
-        alert('处理失败: ' + (error.message || '请检查网络连接并重试'));
-    } finally {
-        // 恢复按钮状态
-        removeButton.disabled = false;
-        removeButton.innerHTML = '<i class="fas fa-magic"></i> 去除背景';
+uploadInput.addEventListener('change', () => handleFile(uploadInput.files[0]));
+dropZone.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        uploadInput.click();
     }
 });
+dropZone.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    dropZone.classList.add('is-dragging');
+});
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('is-dragging'));
+dropZone.addEventListener('drop', (event) => {
+    event.preventDefault();
+    dropZone.classList.remove('is-dragging');
+    const file = event.dataTransfer.files[0];
+    if (file) handleFile(file);
+});
 
-// 显示图片函数
-function displayImage(file, targetId) {
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        if (event.target && event.target.result) {
-            const img = document.createElement('img');
-            img.src = event.target.result;
-            img.alt = '上传的图片';
-            const container = document.getElementById(targetId);
-            if (container) {
-                container.innerHTML = '';
-                container.appendChild(img);
-            }
-        }
-    };
-    reader.onerror = function(error) {
-        console.error('Error reading file:', error);
-        alert('读取图片失败，请重试');
-    };
-    reader.readAsDataURL(file);
-}
+removeButton.addEventListener('click', () => {
+    if (selectedFile) setStatus('处理服务尚未完成安全配置。为保护您的图片和服务凭据，本站暂不提交该文件。', 'error');
+});
